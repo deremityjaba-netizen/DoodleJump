@@ -7,5 +7,12 @@ public class GameSettings {
     public static final int VELOCITY_ITERATIONS = 6;
     public static final int POSITION_ITERATIONS = 6;
     public static final float SCALE = 0.05f;
+    public static final short PLATE_BIT = 1;
+    public static final short DOODLE_BIT = 2;
+    public static final int DOODLE_WIDTH = 150;
+    public static final int DOODLE_HEIGHT = 150;
+    public static final int DOODLE_FORCE_RATIO = 10;
+    public static final long STARTING_PLATE_APPEARANCE_COOL_DOWN = 2000;
+    public static final int JUMPING_COOL_DOWN = 600;
 
 }

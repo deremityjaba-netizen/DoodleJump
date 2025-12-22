@@ -17,6 +17,7 @@ public class GameObject {
     public int height;
     public Texture texture;
     public Body body;
+    protected  boolean isTouched;
 
 
     public int getX() {
@@ -51,6 +52,14 @@ public class GameObject {
     public void hit(){
 
     }
+    public void setTouched(boolean value){
+        isTouched = value;
+    }
+
+    protected float getDensity(){
+        return 0.1f;
+    }
+
     private Body createBody(float x, float y, World world){
 
         BodyDef def = new BodyDef();
@@ -65,7 +74,7 @@ public class GameObject {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.filter.categoryBits = cBits;
         fixtureDef.shape = circleShape;
-        fixtureDef.density = 0.1f;
+        fixtureDef.density = getDensity();
         fixtureDef.friction = 1f;
 
         Fixture fixture = body.createFixture(fixtureDef);

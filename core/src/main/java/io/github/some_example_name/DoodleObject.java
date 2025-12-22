@@ -9,17 +9,23 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class DoodleObject extends  GameObject{
     private int livesLeft;
     long lastJumpTime;
+
     public DoodleObject(int x, int y, int width, int height, String texturePath, World world) {
         super(texturePath, x, y, width, height, GameSettings.DOODLE_BIT, world);
-        body.setLinearDamping(10);
+        //body.setLinearDamping(10);
         livesLeft = 3;
     }
     public boolean needToJump(){
-        if(TimeUtils.millis() - lastJumpTime >= GameSettings.JUMPING_COOL_DOWN){
+        if(isTouched && TimeUtils.millis() - lastJumpTime >= GameSettings.JUMPING_COOL_DOWN){
             lastJumpTime = TimeUtils.millis();
             return true;
         }
         return false;
+    }
+
+    public void jump(float force) {
+        body.applyLinearImpulse(new Vector2(0, force), new Vector2(getX(),getY()), true);
+
     }
     public void putInFrame(){
 
@@ -50,6 +56,7 @@ public class DoodleObject extends  GameObject{
         );
 
     }
+
     @Override
     public void hit(){
         if(getY() <= (height / 2f)){

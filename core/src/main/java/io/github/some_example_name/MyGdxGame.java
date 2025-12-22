@@ -24,15 +24,21 @@ public class MyGdxGame extends Game {
     public World world;
     float accumulator = 0;
     public Vector3 touch ;
+    public GameScreen gameScreen;
     public OrthographicCamera camera;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
-        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
-        world = new World(new Vector2(0,0), true);
-        batch = new SpriteBatch();
         Box2D.init();
+        batch = new SpriteBatch();
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
+        world = new World(new Vector2(0,-9.8f), true);
+        batch = new SpriteBatch();
+
+        gameScreen = new GameScreen(this);
+        setScreen(gameScreen);
+
     }
     public  void stepWorld(){
         float delta = Gdx.graphics.getDeltaTime();

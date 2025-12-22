@@ -14,5 +14,6 @@ public class GameSettings {
     public static final int DOODLE_FORCE_RATIO = 10;
     public static final long STARTING_PLATE_APPEARANCE_COOL_DOWN = 2000;
     public static final int JUMPING_COOL_DOWN = 600;
+    public static final float PLATE_VELOSITY = 10;
 
 }

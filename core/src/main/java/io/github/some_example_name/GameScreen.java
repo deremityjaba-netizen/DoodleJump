@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen extends ScreenAdapter {
     MyGdxGame myGdxGame;
+    ForceSource forceSource;
     DoodleObject doodleObject;
     PlateObject plateObject;
     ContactManager contactManager;
@@ -23,6 +24,7 @@ public class GameScreen extends ScreenAdapter {
             GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT / 3,
             200, 10, GameImages.PLATE_PNG_PATH, myGdxGame.world);
         contactManager = new ContactManager(myGdxGame.world);
+        forceSource = new ForceSource(1, 10, 1);
         this.myGdxGame = myGdxGame;
 
     }
@@ -33,6 +35,7 @@ public class GameScreen extends ScreenAdapter {
     @Override
     public void render(float delta){
         handleInput();
+        forceSource.update();
         myGdxGame.stepWorld();
 
         draw();
@@ -58,7 +61,9 @@ public class GameScreen extends ScreenAdapter {
 
         } else {
             if (doodleObject.needToJump()) {
-                doodleObject.jump(10);
+
+                doodleObject.jump(10 + forceSource.getForce());
+                System.out.println(forceSource.getForce());
             }
         }
 

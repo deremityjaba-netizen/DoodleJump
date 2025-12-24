@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package io.github.some_example_name.managers;
 
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -6,6 +6,9 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+
+import io.github.some_example_name.game.GameSettings;
+import io.github.some_example_name.objects.GameObject;
 
 public class ContactManager {
     World world;
@@ -21,6 +24,8 @@ public class ContactManager {
 
                 int cDefA = fixA.getFilterData().categoryBits;
                 int cDefB = fixB.getFilterData().categoryBits;
+
+                System.out.println(cDefA + " " + cDefB);
 
                 if(cDefA == GameSettings.PLATE_BIT && cDefB == GameSettings.DOODLE_BIT
                 || cDefA == GameSettings.DOODLE_BIT && cDefB == GameSettings.PLATE_BIT) {

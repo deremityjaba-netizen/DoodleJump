@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package io.github.some_example_name.objects;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -6,12 +6,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class DoodleObject extends  GameObject{
+import io.github.some_example_name.game.GameSettings;
+
+public class DoodleObject extends GameObject {
     private int livesLeft;
     long lastJumpTime;
 
     public DoodleObject(int x, int y, int width, int height, String texturePath, World world) {
-        super(texturePath, x, y, width, height, GameSettings.DOODLE_BIT, world);
+        super(texturePath, x, y, width, height, GameSettings.DOODLE_BIT, GameSettings.PLATE_BIT, world);
         //body.setLinearDamping(10);
         livesLeft = 3;
     }

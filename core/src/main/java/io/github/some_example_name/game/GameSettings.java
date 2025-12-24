@@ -1,4 +1,4 @@
-package io.github.some_example_name;
+package io.github.some_example_name.game;
 
 public class GameSettings {
     public static final int SCREEN_WIDTH = 720;
@@ -9,11 +9,11 @@ public class GameSettings {
     public static final float SCALE = 0.05f;
     public static final short PLATE_BIT = 1;
     public static final short DOODLE_BIT = 2;
-    public static final int DOODLE_WIDTH = 150;
-    public static final int DOODLE_HEIGHT = 150;
+
     public static final int DOODLE_FORCE_RATIO = 10;
-    public static final long STARTING_PLATE_APPEARANCE_COOL_DOWN = 2000;
+    public static final long STARTING_PLATE_APPEARANCE_COOL_DOWN = 5000;
     public static final int JUMPING_COOL_DOWN = 600;
-    public static final float PLATE_VELOSITY = 10;
+    public static final float PLATE_VELOSITY = 1;
+    public static final int PADDING_HORISONTAL = 30;
 
 }

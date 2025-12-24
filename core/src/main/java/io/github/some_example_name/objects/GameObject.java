@@ -1,18 +1,19 @@
-package io.github.some_example_name;
+package io.github.some_example_name.objects;
 
-import static io.github.some_example_name.GameSettings.SCALE;
+import static io.github.some_example_name.game.GameSettings.SCALE;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class GameObject {
     public short cBits;
+    public  short mBits;
     public int width;
     public int height;
     public Texture texture;
@@ -40,13 +41,14 @@ public class GameObject {
         batch.draw(texture, getX() - (width/2f), getY() -(height/2f), width, height );
 
     }
-    GameObject(String texturePath, int x, int y, int width, int height, short cBits, World world){
+    GameObject(String texturePath, int x, int y, int width, int height, short cBits, short mBits, World world){
         this.cBits = cBits;
+        this.mBits = mBits;
         this.width = width;
         this.height = height;
 
         texture = new Texture(texturePath);
-        body = createBody(x, y, world);
+        body = createBody(x, y, width, height, world);
 
     }
     public void hit(){
@@ -60,7 +62,7 @@ public class GameObject {
         return 0.1f;
     }
 
-    private Body createBody(float x, float y, World world){
+    private Body createBody(float x, float y, float width, float height, World world){
 
         BodyDef def = new BodyDef();
 
@@ -68,18 +70,19 @@ public class GameObject {
         def.fixedRotation = true;
         Body body = world.createBody(def);
 
-        CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(Math.max(width, height) * SCALE / 2f);
+        PolygonShape  boxShape = new PolygonShape();
+        boxShape.setAsBox(width * SCALE * 0.5f, height * SCALE * 0.5f);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.filter.categoryBits = cBits;
-        fixtureDef.shape = circleShape;
+        fixtureDef.filter.maskBits = mBits;
+        fixtureDef.shape = boxShape;
         fixtureDef.density = getDensity();
         fixtureDef.friction = 1f;
 
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);
-        circleShape.dispose();
+        boxShape.dispose();
 
         body.setTransform(x * SCALE, y * SCALE, 0);
         return body;

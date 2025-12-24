@@ -1,13 +1,16 @@
-package io.github.some_example_name;
+package io.github.some_example_name.game;
 
 public class ForceSource {
-    float minForce = 1;
-    float maxForce = 10;
-    float stepForce = 1;
+    float minForce;
+    float maxForce ;
+    float stepForce;
     private int direction = 1;
-    private float force = 1;
+    private float force;
     public ForceSource(float minForce, float maxForce, float stepForce){
-
+        this.minForce = minForce;
+        this.maxForce = maxForce;
+        this.stepForce = stepForce;
+        this.force = (minForce + maxForce ) / 2;
     }
     public void  update() {
 

@@ -6,6 +6,7 @@ import io.github.some_example_name.GameState;
 
 public class GameSession {
     public GameState state;
+    long pauseStartTime;
     long sessionStartTime;
     long nextTrashSpawnTime;
 
@@ -16,6 +17,15 @@ public class GameSession {
         nextTrashSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_PLATE_APPEARANCE_COOL_DOWN
             * getTrashPeriodCoolDown());
 
+    }
+    public void pauseGame(){
+        state = GameState.PAUSED;
+        pauseStartTime = TimeUtils.millis();
+    }
+
+    public void resumeGame(){
+        state = GameState.PLAYING;
+        sessionStartTime += TimeUtils.millis() - pauseStartTime;
     }
 
 

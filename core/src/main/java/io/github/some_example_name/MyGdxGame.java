@@ -8,7 +8,9 @@ import static io.github.some_example_name.game.GameSettings.VELOCITY_ITERATIONS;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -16,7 +18,9 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+import io.github.some_example_name.game.GameImages;
 import io.github.some_example_name.screens.GameScreen;
+import io.github.some_example_name.screens.MenuScreen;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGdxGame extends Game {
@@ -24,13 +28,20 @@ public class MyGdxGame extends Game {
     public Box2DDebugRenderer debugRenderer;
     public World world;
     float accumulator = 0;
-    public Vector3 touch ;
+    public Vector3 touch;
     public GameScreen gameScreen;
+    public MenuScreen menuScreen;
+    public BitmapFont commonWhiteFont;
+    public BitmapFont commonBlackFont;
+    public BitmapFont largeWhiteFont;
     public OrthographicCamera camera;
 
     @Override
     public void create() {
         Box2D.init();
+        largeWhiteFont = FontBuilder.generate(48, Color.WHITE, GameImages.FONT_PATH);
+        commonBlackFont = FontBuilder.generate(30, Color.BLACK, GameImages.FONT_PATH);
+        commonWhiteFont = FontBuilder.generate(24, Color.WHITE, GameImages.FONT_PATH);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -39,7 +50,8 @@ public class MyGdxGame extends Game {
         debugRenderer = new Box2DDebugRenderer();
 
         gameScreen = new GameScreen(this);
-        setScreen(gameScreen);
+        menuScreen = new MenuScreen(this);
+        setScreen(menuScreen);
 
     }
     public  void stepWorld(){

@@ -20,49 +20,94 @@ import io.github.some_example_name.MyGdxGame;
 import io.github.some_example_name.game.GameSession;
 import io.github.some_example_name.game.GameSettings;
 import io.github.some_example_name.objects.PlateObject;
+import io.github.some_example_name.view.ButtonView;
+import io.github.some_example_name.view.ImageView;
+import io.github.some_example_name.view.MovingBackgroundView;
+import io.github.some_example_name.view.TextView;
 
 public class GameScreen extends ScreenAdapter {
     MyGdxGame myGdxGame;
     GameSession gameSession;
+    MovingBackgroundView backgroundView;
+    TextView forceText;
     ForceSource forceSource;
+    ButtonView continueButton;
+    ButtonView pauseButton;
+    TextView pauseTextView;
+    ImageView fullBlackoutView;
     DoodleObject doodleObject;
     ArrayList<PlateObject> plateArray;
 
 
     ContactManager contactManager;
-    public GameScreen(MyGdxGame myGdxGame){
+
+    public GameScreen(MyGdxGame myGdxGame) {
         gameSession = new GameSession();
+
+
         doodleObject = new DoodleObject(
             GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT * 4 / 5,
             40, 50, GameImages.DOODLE_PNG_PATH, myGdxGame.world);
         plateArray = new ArrayList<>();
-        plateArray.add(  new PlateObject(
+        plateArray.add(new PlateObject(
             GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT * 4 / 5,
-            200, 10, GameImages.PLATE_PNG_PATH, myGdxGame.world));
+            200, 20, GameImages.PLATE_PNG_PATH, myGdxGame.world));
+
+
         contactManager = new ContactManager(myGdxGame.world);
         forceSource = new ForceSource(1, 4, 1);
+
+        forceText = new TextView(myGdxGame.commonWhiteFont, 305, 1215);
+        pauseTextView = new TextView(myGdxGame.largeWhiteFont, 282, 842, "Pause");
+
+        fullBlackoutView = new ImageView(0, 0, GameImages.FULL_BLACK_BG_IMG_PATH);
+        backgroundView = new MovingBackgroundView(GameImages.BACKGROUND_IMG_PATH);
+
+        pauseButton = new ButtonView(605, 1200,
+            46, 54,
+            GameImages.PAUSE_ICON_IMG_PATH);
+        continueButton = new ButtonView(
+            393, 695,
+            200, 70,
+            myGdxGame.commonBlackFont,
+            GameImages.BUTTON_SHORT_IMG_PATH,
+            "Continue"
+        );
         this.myGdxGame = myGdxGame;
 
     }
+
     @Override
     public void show() {
         gameSession.startGame();
     }
+
     @Override
-    public void render(float delta){
+    public void render(float delta) {
         handleInput();
         if (gameSession.state == GameState.PLAYING) {
 
             if (gameSession.shouldSpawnTrash()) {
                 PlateObject plateObject = new PlateObject(100 / 2 + GameSettings.PADDING_HORISONTAL + (new Random()).nextInt((GameSettings.SCREEN_WIDTH - 2 * GameSettings.PADDING_HORISONTAL - 100)),
-                    GameSettings.SCREEN_HEIGHT + 10/ 2,
+                    GameSettings.SCREEN_HEIGHT + 10 / 2,
                     100, 10, GameImages.PLATE_PNG_PATH, myGdxGame.world);
                 plateArray.add(plateObject);
             }
+            forceText.setText("Force: " + forceSource.getForce());
             updateTrash();
+            if (doodleObject.needToJump()) {
+
+                doodleObject.jump(7 + forceSource.getForce());
+                System.out.println(forceSource.getForce());
+            }
+            if (!doodleObject.isAlive()) {
+                myGdxGame.setScreen(myGdxGame.menuScreen);
+            }
+            forceSource.update();
+            backgroundView.move();
+            myGdxGame.stepWorld();
         }
-        forceSource.update();
-        myGdxGame.stepWorld();
+
 
         draw();
     }
@@ -76,31 +121,53 @@ public class GameScreen extends ScreenAdapter {
 
 
         myGdxGame.batch.begin();
+
+        backgroundView.draw(myGdxGame.batch);
+
+        forceText.draw(myGdxGame.batch);
+        pauseButton.draw(myGdxGame.batch);
+
+
         doodleObject.draw(myGdxGame.batch);
         for (PlateObject plate : plateArray) plate.draw(myGdxGame.batch);
 
-        myGdxGame.debugRenderer.render(myGdxGame.world, myGdxGame.camera.combined);
+        //myGdxGame.debugRenderer.render(myGdxGame.world, myGdxGame.camera.combined);
+
+        if (gameSession.state == GameState.PAUSED) {
+            fullBlackoutView.draw(myGdxGame.batch);
+            pauseTextView.draw(myGdxGame.batch);
+            continueButton.draw(myGdxGame.batch);
+        }
+
         myGdxGame.batch.end();
 
     }
+
     private void handleInput() {
         if (Gdx.input.isTouched()) {
-            myGdxGame.touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        myGdxGame.touch = myGdxGame.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        switch (gameSession.state) {
+            case PLAYING:
+                if (pauseButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                    gameSession.pauseGame();
+                }
+                        doodleObject.move(myGdxGame.touch);
 
-        } else {
-            if (doodleObject.needToJump()) {
 
-                doodleObject.jump(7 + forceSource.getForce());
-                System.out.println(forceSource.getForce());
-            }
+                    break;
+            case PAUSED:
+                if (continueButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                    gameSession.resumeGame();
+                }
+
+            break;
         }
-
-
+        }
     }
 
     private void updateTrash() {
         for (int i = 0; i < plateArray.size(); i++) {
-            boolean hasToBeDestroyed =  !plateArray.get(i).isInFrame();
+            boolean hasToBeDestroyed = !plateArray.get(i).isInFrame();
 
 
             if (hasToBeDestroyed) {
@@ -109,6 +176,6 @@ public class GameScreen extends ScreenAdapter {
                 plateArray.remove(i--);
             }
         }
+
     }
 }
-

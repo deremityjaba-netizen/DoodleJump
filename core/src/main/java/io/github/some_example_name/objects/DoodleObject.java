@@ -47,28 +47,26 @@ public class DoodleObject extends GameObject {
     }
     public void move(Vector3 vector3){
         float fx = (vector3.x - getX()) * GameSettings.DOODLE_FORCE_RATIO;
-        float fy = (vector3.y - getY()) * GameSettings.DOODLE_FORCE_RATIO;
+
 
         body.applyForceToCenter(
             new Vector2(
-                (vector3.x - getX()) * GameSettings.DOODLE_FORCE_RATIO,
-                (vector3.y - getY()) * GameSettings.DOODLE_FORCE_RATIO
+                (vector3.x - getX()) / GameSettings.DOODLE_FORCE_RATIO,
+                0
             ),
             true
         );
 
     }
 
-    @Override
+   /*@Override
     public void hit(){
-        if(getY() <= (height / 2f)){
-            livesLeft -= 3;
-        }
-    }
+
+
+
+    }*/
     public boolean isAlive(){
-        return livesLeft > 0;
+        return getY() >= (height / 2f);
     }
-    public int getLivesLeft(){
-        return livesLeft;
-    }
+
 }

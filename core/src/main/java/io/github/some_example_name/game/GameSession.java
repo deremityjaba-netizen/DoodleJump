@@ -2,13 +2,17 @@ package io.github.some_example_name.game;
 
 import com.badlogic.gdx.utils.TimeUtils;
 
+import java.util.ArrayList;
+
 import io.github.some_example_name.GameState;
+import io.github.some_example_name.managers.MemoryManager;
 
 public class GameSession {
     public GameState state;
     long pauseStartTime;
     long sessionStartTime;
     long nextTrashSpawnTime;
+    private  int score;
 
 
     public void startGame() {
@@ -17,6 +21,9 @@ public class GameSession {
         nextTrashSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_PLATE_APPEARANCE_COOL_DOWN
             * getTrashPeriodCoolDown());
 
+    }
+    public  int getScore(){
+        return  score;
     }
     public void pauseGame(){
         state = GameState.PAUSED;
@@ -37,10 +44,27 @@ public class GameSession {
         }
         return false;
     }
+    public  void updateScore(){
+        score = (int) (TimeUtils.millis() - sessionStartTime) / 10;
+    }
 
 
 
     private float getTrashPeriodCoolDown() {
         return (float) Math.exp(-0.001 * (TimeUtils.millis() - sessionStartTime) / 350);
+    }
+    public  void endGame(){
+        updateScore();
+        state = GameState.ENDED;
+        ArrayList<Integer> recordsTable = MemoryManager.loadRecordsTable();
+        if(recordsTable == null){
+            recordsTable = new ArrayList<>();
+        }
+        int foundIdx = 0;
+        for(; foundIdx < recordsTable.size(); foundIdx++){
+            if(recordsTable.get(foundIdx) < getScore()) break;
+        }
+        recordsTable.add(foundIdx, getScore());
+        MemoryManager.saveTableOfRecords(recordsTable);
     }
 }

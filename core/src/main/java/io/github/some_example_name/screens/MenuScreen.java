@@ -25,7 +25,7 @@ public class MenuScreen extends ScreenAdapter {
 
 
 
-        titleView = new TextView(myGdxGame.largeWhiteFont, 180, 960, "Space Cleaner");
+        titleView = new TextView(myGdxGame.commonBlackFont, 230, 960, "Space Cleaner");
 
         startButtonView = new ButtonView(140, 646, 440, 70, myGdxGame.commonBlackFont, GameImages.BUTTON_LONG_IMG_PATH, "start");
         settingsButtonView = new ButtonView(140, 551, 440, 70, myGdxGame.commonBlackFont, GameImages.BUTTON_LONG_IMG_PATH, "settings");
@@ -61,7 +61,7 @@ public class MenuScreen extends ScreenAdapter {
             if (exitButtonView.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {Gdx.app.exit();
             }
             if (settingsButtonView.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
-                //myGdxGame.setScreen(myGdxGame.settingsScreen);
+                myGdxGame.setScreen(myGdxGame.settingsScreen);
             }
         }
     }

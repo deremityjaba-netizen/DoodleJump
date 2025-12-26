@@ -30,6 +30,9 @@ public class DoodleObject extends GameObject {
 
     }
     public void putInFrame(){
+        if(getY() > GameSettings.SCREEN_HEIGHT){
+            setY(GameSettings.SCREEN_HEIGHT);
+        }
 
 
         if(getX() < (-width / 2f)){

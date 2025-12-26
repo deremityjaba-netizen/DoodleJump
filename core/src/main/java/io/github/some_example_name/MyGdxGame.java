@@ -19,8 +19,10 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 import io.github.some_example_name.game.GameImages;
+import io.github.some_example_name.managers.AudioManager;
 import io.github.some_example_name.screens.GameScreen;
 import io.github.some_example_name.screens.MenuScreen;
+import io.github.some_example_name.screens.SettingsScreen;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class MyGdxGame extends Game {
@@ -31,6 +33,8 @@ public class MyGdxGame extends Game {
     public Vector3 touch;
     public GameScreen gameScreen;
     public MenuScreen menuScreen;
+    public SettingsScreen settingsScreen;
+    public AudioManager audioManager;
     public BitmapFont commonWhiteFont;
     public BitmapFont commonBlackFont;
     public BitmapFont largeWhiteFont;
@@ -48,9 +52,11 @@ public class MyGdxGame extends Game {
         world = new World(new Vector2(0,-9.8f), true);
         batch = new SpriteBatch();
         debugRenderer = new Box2DDebugRenderer();
+        audioManager = new AudioManager();
 
         gameScreen = new GameScreen(this);
         menuScreen = new MenuScreen(this);
+        settingsScreen = new SettingsScreen(this);
         setScreen(menuScreen);
 
     }

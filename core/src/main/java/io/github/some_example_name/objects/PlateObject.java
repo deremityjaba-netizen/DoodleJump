@@ -14,7 +14,7 @@ public class PlateObject extends GameObject {
 
     @Override
     protected float getDensity() {
-        return  7;
+        return  20;
     }
     public boolean isInFrame(){
 

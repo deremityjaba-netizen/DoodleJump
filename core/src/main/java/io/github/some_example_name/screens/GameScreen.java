@@ -117,11 +117,11 @@ public class GameScreen extends ScreenAdapter {
                     100, 10, GameImages.PLATE_PNG_PATH, myGdxGame.world);
                 plateArray.add(plateObject);
             }
-            forceText.setText("Force: " + forceSource.getForce());
+            //forceText.setText("Force: " + forceSource.getForce());
             updateTrash();
             if (doodleObject.needToJump()) {
 
-                doodleObject.jump(6 + forceSource.getForce());
+                doodleObject.jump(8);
                 if (myGdxGame.audioManager.isSoundOn) {
                     myGdxGame.audioManager.shootSound.play(0.2f);
                 }
@@ -154,7 +154,7 @@ public class GameScreen extends ScreenAdapter {
 
         backgroundView.draw(myGdxGame.batch);
 
-        forceText.draw(myGdxGame.batch);
+        //forceText.draw(myGdxGame.batch);
         scoreTextView.draw(myGdxGame.batch);
 
         doodleObject.draw(myGdxGame.batch);
@@ -236,11 +236,11 @@ public class GameScreen extends ScreenAdapter {
         }
 
         doodleObject = new DoodleObject(
-            GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT * 4 / 5,
+            GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT * 9 / 10,
             40, 50, GameImages.DOODLE_PNG_PATH, myGdxGame.world);
 
         plateArray.add(new PlateObject(
-            GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT * 4 / 5,
+            GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT * 9 / 10,
             200, 20, GameImages.PLATE_PNG_PATH, myGdxGame.world));
 
         gameSession.startGame();

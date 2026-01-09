@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class GameObject {
     public short cBits;
-    public  short mBits;
+    //public  short mBits;
     public int width;
     public int height;
     public Texture texture;
@@ -41,9 +41,9 @@ public class GameObject {
         batch.draw(texture, getX() - (width/2f), getY() -(height/2f), width, height );
 
     }
-    GameObject(String texturePath, int x, int y, int width, int height, short cBits, short mBits, World world){
+    GameObject(String texturePath, int x, int y, int width, int height, short cBits, /*short mBits,*/ World world){
         this.cBits = cBits;
-        this.mBits = mBits;
+        //this.mBits = mBits;
         this.width = width;
         this.height = height;
 
@@ -75,7 +75,7 @@ public class GameObject {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.filter.categoryBits = cBits;
-        fixtureDef.filter.maskBits = mBits;
+        //fixtureDef.filter.maskBits = mBits;
         fixtureDef.shape = boxShape;
         fixtureDef.density = getDensity();
         fixtureDef.friction = 1f;

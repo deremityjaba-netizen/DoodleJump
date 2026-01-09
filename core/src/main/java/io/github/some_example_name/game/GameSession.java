@@ -12,6 +12,7 @@ public class GameSession {
     long pauseStartTime;
     long sessionStartTime;
     long nextTrashSpawnTime;
+    long nextBombSpawnTime;
     private  int score;
 
 
@@ -20,6 +21,8 @@ public class GameSession {
         sessionStartTime = TimeUtils.millis();
         nextTrashSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_PLATE_APPEARANCE_COOL_DOWN
             * getTrashPeriodCoolDown());
+        nextBombSpawnTime = sessionStartTime + (long) (GameSettings.STARTING_BOMB_APPEARANCE_COOL_DOWN
+            * getBombPeriodCoolDown());
 
     }
     public  int getScore(){
@@ -44,6 +47,14 @@ public class GameSession {
         }
         return false;
     }
+    public boolean shouldSpawnBomb(){
+        if(nextBombSpawnTime <= TimeUtils.millis()){
+            nextBombSpawnTime = TimeUtils.millis() + (long) (GameSettings.STARTING_BOMB_APPEARANCE_COOL_DOWN
+                * getBombPeriodCoolDown());
+            return true;
+        }
+        return false;
+    }
     public  void updateScore(){
         score = (int) (TimeUtils.millis() - sessionStartTime) / 10;
     }
@@ -51,6 +62,9 @@ public class GameSession {
 
 
     private float getTrashPeriodCoolDown() {
+        return (float) Math.exp(-0.001 * (TimeUtils.millis() - sessionStartTime) / 350);
+    }
+    private float getBombPeriodCoolDown() {
         return (float) Math.exp(-0.001 * (TimeUtils.millis() - sessionStartTime) / 350);
     }
     public  void endGame(){

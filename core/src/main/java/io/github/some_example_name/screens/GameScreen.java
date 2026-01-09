@@ -14,6 +14,7 @@ import java.util.Random;
 import io.github.some_example_name.GameState;
 import io.github.some_example_name.managers.ContactManager;
 import io.github.some_example_name.managers.MemoryManager;
+import io.github.some_example_name.objects.BombObject;
 import io.github.some_example_name.objects.DoodleObject;
 import io.github.some_example_name.game.ForceSource;
 import io.github.some_example_name.game.GameImages;
@@ -23,6 +24,7 @@ import io.github.some_example_name.game.GameSettings;
 import io.github.some_example_name.objects.PlateObject;
 import io.github.some_example_name.view.ButtonView;
 import io.github.some_example_name.view.ImageView;
+import io.github.some_example_name.view.LiveView;
 import io.github.some_example_name.view.MovingBackgroundView;
 import io.github.some_example_name.view.RecordListViews;
 import io.github.some_example_name.view.TextView;
@@ -30,6 +32,7 @@ import io.github.some_example_name.view.TextView;
 public class GameScreen extends ScreenAdapter {
     MyGdxGame myGdxGame;
     GameSession gameSession;
+    LiveView liveView;
     MovingBackgroundView backgroundView;
     TextView forceText;
     ForceSource forceSource;
@@ -44,6 +47,7 @@ public class GameScreen extends ScreenAdapter {
     ImageView fullBlackoutView;
     DoodleObject doodleObject;
     ArrayList<PlateObject> plateArray;
+    ArrayList<BombObject> bombArray;
 
 
     ContactManager contactManager;
@@ -56,6 +60,7 @@ public class GameScreen extends ScreenAdapter {
             GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT * 4 / 5,
             40, 50, GameImages.DOODLE_PNG_PATH, myGdxGame.world);
         plateArray = new ArrayList<>();
+        bombArray = new ArrayList<>();
         plateArray.add(new PlateObject(
             GameSettings.SCREEN_WIDTH / 2, GameSettings.SCREEN_HEIGHT * 4 / 5,
             200, 20, GameImages.PLATE_PNG_PATH, myGdxGame.world));
@@ -71,6 +76,7 @@ public class GameScreen extends ScreenAdapter {
         recordsTextView = new TextView(myGdxGame.largeWhiteFont, 206, 842, "Last records");
 
         fullBlackoutView = new ImageView(0, 0, GameImages.FULL_BLACK_BG_IMG_PATH);
+        liveView = new LiveView(305, 1215);
         backgroundView = new MovingBackgroundView(GameImages.BACKGROUND_IMG_PATH);
 
         pauseButton = new ButtonView(605, 1200,
@@ -117,8 +123,18 @@ public class GameScreen extends ScreenAdapter {
                     100, 10, GameImages.PLATE_PNG_PATH, myGdxGame.world);
                 plateArray.add(plateObject);
             }
+
+            if (gameSession.shouldSpawnBomb()) {
+                BombObject bombObject = new BombObject(100 / 2 + GameSettings.PADDING_HORISONTAL + (new Random()).nextInt((GameSettings.SCREEN_WIDTH - 2 * GameSettings.PADDING_HORISONTAL - 100)),
+                    GameSettings.SCREEN_HEIGHT + 10 / 2,
+                    70, 70, GameImages.BOMB_IMG_PATH, myGdxGame.world);
+                bombArray.add(bombObject);
+            }
             //forceText.setText("Force: " + forceSource.getForce());
+            updateBomb();
             updateTrash();
+            liveView.setLeftLives(doodleObject.getLivesLeft());
+
             if (doodleObject.needToJump()) {
 
                 doodleObject.jump(8);
@@ -159,7 +175,11 @@ public class GameScreen extends ScreenAdapter {
 
         doodleObject.draw(myGdxGame.batch);
         for (PlateObject plate : plateArray) plate.draw(myGdxGame.batch);
+        for (BombObject bomb : bombArray) bomb.draw(myGdxGame.batch);
+        liveView.draw(myGdxGame.batch);
         pauseButton.draw(myGdxGame.batch);
+
+
 
         //myGdxGame.debugRenderer.render(myGdxGame.world, myGdxGame.camera.combined);
 
@@ -216,9 +236,20 @@ public class GameScreen extends ScreenAdapter {
 
 
             if (hasToBeDestroyed) {
-                System.out.println("puwiehpf;iu");
                 myGdxGame.world.destroyBody(plateArray.get(i).body);
                 plateArray.remove(i--);
+            }
+        }
+
+    }
+    private void updateBomb() {
+        for (int i = 0; i < bombArray.size(); i++) {
+            boolean hasToBeDestroyed = !bombArray.get(i).isAlive() || !bombArray.get(i).isInFrame();
+
+
+            if (hasToBeDestroyed) {
+                myGdxGame.world.destroyBody(bombArray.get(i).body);
+                bombArray.remove(i--);
             }
         }
 
@@ -228,6 +259,10 @@ public class GameScreen extends ScreenAdapter {
         for (int i = 0; i < plateArray.size(); i++) {
             myGdxGame.world.destroyBody(plateArray.get(i).body);
             plateArray.remove(i--);
+        }
+        for (int i = 0; i < bombArray.size(); i++) {
+            myGdxGame.world.destroyBody(bombArray.get(i).body);
+            bombArray.remove(i--);
         }
 
 

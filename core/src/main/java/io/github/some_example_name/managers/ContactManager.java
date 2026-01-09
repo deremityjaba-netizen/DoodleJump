@@ -31,6 +31,12 @@ public class ContactManager {
                 || cDefA == GameSettings.DOODLE_BIT && cDefB == GameSettings.PLATE_BIT) {
                     ((GameObject) fixA.getUserData()).setTouched(true);
                     ((GameObject) fixB.getUserData()).setTouched(true);
+                }else if (cDefA == GameSettings.BOMB_BIT && cDefB == GameSettings.DOODLE_BIT) {
+                    ((GameObject) fixA.getUserData()).hit();
+                    ((GameObject) fixB.getUserData()).hit();
+                } else if(cDefA == GameSettings.DOODLE_BIT && cDefB == GameSettings.BOMB_BIT){
+                    ((GameObject) fixB.getUserData()).hit();
+                    ((GameObject) fixA.getUserData()).hit();
                 }
 
             }

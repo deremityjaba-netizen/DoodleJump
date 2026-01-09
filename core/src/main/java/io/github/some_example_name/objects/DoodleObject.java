@@ -13,8 +13,8 @@ public class DoodleObject extends GameObject {
     long lastJumpTime;
 
     public DoodleObject(int x, int y, int width, int height, String texturePath, World world) {
-        super(texturePath, x, y, width, height, GameSettings.DOODLE_BIT, GameSettings.PLATE_BIT, world);
-        //body.setLinearDamping(10);
+        super(texturePath, x, y, width, height, GameSettings.DOODLE_BIT, world);
+
         livesLeft = 3;
     }
     public boolean needToJump(){
@@ -62,14 +62,18 @@ public class DoodleObject extends GameObject {
 
     }
 
-   /*@Override
+   @Override
     public void hit(){
+     livesLeft -= 1;
 
 
+    }
 
-    }*/
+    public int getLivesLeft(){
+        return livesLeft;
+    }
     public boolean isAlive(){
-        return getY() >= (height / 2f);
+        return getY() >= (height / 2f) && livesLeft > 0;
     }
 
 }

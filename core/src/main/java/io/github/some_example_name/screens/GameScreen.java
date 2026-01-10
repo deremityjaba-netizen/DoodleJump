@@ -116,6 +116,7 @@ public class GameScreen extends ScreenAdapter {
     public void render(float delta) {
         handleInput();
         if (gameSession.state == GameState.PLAYING) {
+            System.out.println("Hello World!");
 
             if (gameSession.shouldSpawnTrash()) {
                 PlateObject plateObject = new PlateObject(100 / 2 + GameSettings.PADDING_HORISONTAL + (new Random()).nextInt((GameSettings.SCREEN_WIDTH - 2 * GameSettings.PADDING_HORISONTAL - 100)),
@@ -137,11 +138,11 @@ public class GameScreen extends ScreenAdapter {
 
             if (doodleObject.needToJump()) {
 
-                doodleObject.jump(8);
+                doodleObject.jump(9);
                 if (myGdxGame.audioManager.isSoundOn) {
-                    myGdxGame.audioManager.shootSound.play(0.2f);
+                    myGdxGame.audioManager.shootSound.play(0.1f);
                 }
-                System.out.println(forceSource.getForce());
+                //System.out.println(forceSource.getForce());
             }
             if (!doodleObject.isAlive()) {
                 gameSession.endGame();
@@ -250,6 +251,9 @@ public class GameScreen extends ScreenAdapter {
             if (hasToBeDestroyed) {
                 myGdxGame.world.destroyBody(bombArray.get(i).body);
                 bombArray.remove(i--);
+                if (myGdxGame.audioManager.isSoundOn) {
+                    myGdxGame.audioManager.explosionSound.play(0.1f);
+                }
             }
         }
 

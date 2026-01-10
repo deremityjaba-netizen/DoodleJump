@@ -20,9 +20,9 @@ public class AudioManager {
     public AudioManager() {
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal(GameImages.BACKGROUND_MUSIC_PATH));
         shootSound = Gdx.audio.newSound(Gdx.files.internal(GameImages.JUMP_SOUND_PATH));
-        //explosionSound = Gdx.audio.newSound(Gdx.files.internal(GameImages.DESTROY_SOUND_PATH));
+        explosionSound = Gdx.audio.newSound(Gdx.files.internal(GameImages.EXPLOSION_SOUND_PATH));
 
-        backgroundMusic.setVolume(0.2f);
+        backgroundMusic.setVolume(0.1f);
         backgroundMusic.setLooping(true);
 
         updateSoundFlag();

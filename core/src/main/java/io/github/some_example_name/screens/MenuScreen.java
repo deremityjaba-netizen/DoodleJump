@@ -23,8 +23,6 @@ public class MenuScreen extends ScreenAdapter {
     public MenuScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
 
-
-
         titleView = new TextView(myGdxGame.commonBlackFont, 230, 960, "Doodle Jump");
 
         startButtonView = new ButtonView(140, 646, 440, 70, myGdxGame.commonBlackFont, GameImages.BUTTON_LONG_IMG_PATH, "start");
@@ -65,5 +63,4 @@ public class MenuScreen extends ScreenAdapter {
             }
         }
     }
-
 }

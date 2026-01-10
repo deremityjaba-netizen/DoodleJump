@@ -31,7 +31,7 @@ public class SettingsScreen extends ScreenAdapter {
         this.myGdxGame = myGdxGame;
 
         backgroundView = new MovingBackgroundView(GameImages.BACKGROUND_IMG_PATH);
-        titleTextView = new TextView(myGdxGame.largeWhiteFont, 256, 956, "Settings");
+        titleTextView = new TextView(myGdxGame.commonBlackFont, 256, 956, "Settings");
         blackoutImageView = new ImageView(85, 365, GameImages.BLACKOUT_MIDDLE_IMG_PATH);
         clearSettingView = new TextView(myGdxGame.commonWhiteFont, 173, 599, "clear records");
 

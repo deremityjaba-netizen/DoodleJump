@@ -13,10 +13,11 @@ public class BombObject extends GameObject {
         body.setGravityScale(1);
         livesLeft = 1;
 
+
     }
     @Override
     protected float getDensity() {
-        return  20;
+        return  9;
     }
     public boolean isInFrame(){
 
